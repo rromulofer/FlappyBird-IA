@@ -55,9 +55,9 @@ class Passaro:
         # restringir o deslocamento
         if deslocamento > 16:
             deslocamento = 16
-        elif deslocamento < 0: # boost no pulo, para não cair mais que pula
-            deslocamento -= 2 
-         
+        elif deslocamento < 0:  # boost no pulo, para não cair mais que pula
+            deslocamento -= 2
+
         self.y += deslocamento
 
         # ângulo do pássaro
@@ -89,16 +89,15 @@ class Passaro:
             self.imagem = self.IMGS[1]
             self.contagem_imagem = self.TEMPO_ANIMACAO*2
 
-
         # desenhar a imagem
         imagem_rotacionada = pygame.transform.rotate(self.imagem, self.angulo)
-        pos_centro_imagem = self.imagem.get_rect(topleft = (self.x, self.y)).center
-        retangulo = imagem_rotacionada.get_rect(center = pos_centro_imagem)
+        pos_centro_imagem = self.imagem.get_rect(
+            topleft=(self.x, self.y)).center
+        retangulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
         tela.blit(imagem_rotacionada, retangulo.topleft)
 
     def get_mask(self):
         pygame.mask.from_surface(self.imagem)
-
 
 
 class Cano:
@@ -119,6 +118,31 @@ class Cano:
         self.altura = random.randrange(50, 450)
         self.pos_base = self.altura - self.CANO_TOPO.get_height()
         self.pos_base = self.altura + self.DISTANCIA
+
+    def mover(self):
+        self.x -= self.VELOCIDADE
+
+    def desenhar(self, tela):
+        tela.blit(self.CANO_TOPO, (self.x, self.pos_topo))
+        tela.blit(self.CANO_BASE, (self.x, self.pos_base))
+
+    def colidir(self,  passaro):
+        passaro_mask = passaro_get_mask()
+        tipo_mask = pygame.mask.from_surface(self.CANO_TOPO)
+        base_mask = pygame.mask.from_surface(self.CANO_BASE)
+
+        distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
+        distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
+
+        # verdadeiro se existe um ponto de colisão do pássaro com o topo
+        topo_ponto = passaro_mask.overLap(topo_mask, distancia_topo)
+        # verdadeiro se existe um ponto de colisão do pássaro com a base
+        base_ponto = passaro_mask.overLap(base_mask, distancia_base)
+
+        if base_ponto or topo_ponto:
+            return True
+        else:
+            return False
 
 
 class Chao:
