@@ -11,7 +11,7 @@ IMAGEM_CHAO = pygame.transform.scale2x(
     pygame.image.load(os.path.join('imgs', 'base.png')))
 IMAGEM_BACKGROUND = pygame.transform.scale2x(
     pygame.image.load(os.path.join('imgs', 'bg.png')))
-IMAGENS_PASSARO = [  # lista de imagens
+IMAGENS_PASSARO = [  # Lista de imagens
     pygame.transform.scale2x(pygame.image.load(
         os.path.join('imgs', 'bird1.png'))),
     pygame.transform.scale2x(pygame.image.load(
@@ -26,12 +26,12 @@ FONTE_PONTOS = pygame.font.SysFont('arial', 50)
 
 class Passaro:
     IMGS = IMAGENS_PASSARO
-    # animações da rotação
+    # Animações da rotação
     ROTACAO_MAXIMA = 25
     VELOCIDADE_ROTACAO = 20
     TEMPO_ANIMACAO = 5
 
-    # atributos do pássaro
+    # Atributos do pássaro
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -40,7 +40,7 @@ class Passaro:
         self.altura = self.y
         self.tempo = 0
         self.contagem_imagem = 0
-        self.imagem = self.IMGS[0]  # primeiro item da lista de imagens
+        self.imagem = self.IMGS[0]  # Primeiro item da lista de imagens
 
     def pular(self):
         self.velocidade = -10.5
@@ -48,19 +48,19 @@ class Passaro:
         self.altura = self.y
 
     def mover(self):
-        # calcular o deslocamento
+        # Calcular o deslocamento
         self.tempo += 1
         deslocamento = 1.5 * (self.tempo**2) + self.velocidade * self.tempo
 
-        # restringir o deslocamento
+        # Restringir o deslocamento
         if deslocamento > 16:
             deslocamento = 16
-        elif deslocamento < 0:  # boost no pulo, para não cair mais que pula
+        elif deslocamento < 0:  # Boost no pulo, para não cair mais que pula
             deslocamento -= 2
 
         self.y += deslocamento
 
-        # ângulo do pássaro
+        # Ângulo do pássaro
         if deslocamento < 0 or self.y < (self.altura + 50):
             if self.angulo < self.ROTACAO_MAXIMA:
                 self.angulo = self.ROTACAO_MAXIMA
@@ -69,7 +69,7 @@ class Passaro:
                 self.angulo -= self.VELOCIDADE_ROTACAO
 
     def desenhar(self, tela):
-        # definir qual imagem do pássaro vai usar
+        # Definir qual imagem do pássaro vai usar
         self.contagem_imagem += 1
 
         if self.contagem_imagem < self.TEMPO_ANIMACAO:
@@ -84,12 +84,12 @@ class Passaro:
             self.imagem = self.IMGS[0]
             self.contagem_imagem = 0
 
-        # se o pássaro estiver caindo a asa não irá bater
+        # Se o pássaro estiver caindo a asa não irá bater
         if self.angulo <= -88:
             self.imagem = self.IMGS[1]
             self.contagem_imagem = self.TEMPO_ANIMACAO*2
 
-        # desenhar a imagem
+        # Desenhar a imagem
         imagem_rotacionada = pygame.transform.rotate(self.imagem, self.angulo)
         pos_centro_imagem = self.imagem.get_rect(
             topleft=(self.x, self.y)).center
@@ -134,9 +134,9 @@ class Cano:
         distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
         distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
 
-        # verdadeiro se existe um ponto de colisão do pássaro com o topo
+        # Verdadeiro se existe um ponto de colisão do pássaro com o topo
         topo_ponto = passaro_mask.overLap(topo_mask, distancia_topo)
-        # verdadeiro se existe um ponto de colisão do pássaro com a base
+        # Verdadeiro se existe um ponto de colisão do pássaro com a base
         base_ponto = passaro_mask.overLap(base_mask, distancia_base)
 
         if base_ponto or topo_ponto:
@@ -172,4 +172,22 @@ class Chao:
 # Fim da criação das classes
 
 
+# Criando o jogo
+def desenhar_tela(tela, passaros, canos, chao, pontos):
+    tela.blit(IMAGEM_BACKGROUND, (0, 0))
 
+    for passaro in passaros:
+        passaro.desenhar(tela)
+    for cano in canos:
+        cano.desenhar(tela)
+    
+    texto = FONTE_PONTOS.render(f"Pontuação: {pontos}", 1, (255, 255, 255))
+    tela.blit(texto, (TELA_LARGURA - 10 - texto.get_width(), 10))
+    chao.desenhar(tela)
+    pygame.display.update()
+
+
+# Função principal do jogo
+
+
+    
