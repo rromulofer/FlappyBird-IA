@@ -180,7 +180,7 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
         passaro.desenhar(tela)
     for cano in canos:
         cano.desenhar(tela)
-    
+
     texto = FONTE_PONTOS.render(f"Pontuação: {pontos}", 1, (255, 255, 255))
     tela.blit(texto, (TELA_LARGURA - 10 - texto.get_width(), 10))
     chao.desenhar(tela)
@@ -188,6 +188,34 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
 
 
 # Função principal do jogo
+def main():
+    passaros = [Passaro(230, 350)]
+    chao = Chao(730)
+    canos = [Cano(700)]
+    tela = pygame.display.set_mode((TELA_LARGURA, TELA_ALTURA))
+    pontos = 0
+    relogio = pygame.time.Clock()
+
+    rodando = True
+    while Rodando:
+        relogio.tick(30)  # 30 quadros por segundo
+
+        # Interação com o usuário
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                rodando = False
+                pygame.quit()
+                quit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_SPACE:
+                    for passaro in passaros:
+                        passaro.pular()
+        
+        # Mover os objetos
+        for passaro in passaros:
+            passaro.mover()
+        chao.mover()
 
 
-    
+
+        desenhar_tela(tela, passaros, canos, chao, pontos)
