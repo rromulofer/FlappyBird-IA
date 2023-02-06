@@ -97,7 +97,7 @@ class Passaro:
         tela.blit(imagem_rotacionada, retangulo.topleft)
 
     def get_mask(self):
-        pygame.mask.from_surface(self.imagem)
+        return pygame.mask.from_surface(self.imagem)
 
 
 class Cano:
@@ -127,17 +127,17 @@ class Cano:
         tela.blit(self.CANO_BASE, (self.x, self.pos_base))
 
     def colidir(self,  passaro):
-        passaro_mask = passaro_get_mask()
-        tipo_mask = pygame.mask.from_surface(self.CANO_TOPO)
+        passaro_mask = passaro.get_mask()
+        topo_mask = pygame.mask.from_surface(self.CANO_TOPO)
         base_mask = pygame.mask.from_surface(self.CANO_BASE)
 
         distancia_topo = (self.x - passaro.x, self.pos_topo - round(passaro.y))
         distancia_base = (self.x - passaro.x, self.pos_base - round(passaro.y))
 
         # Verdadeiro se existe um ponto de colisão do pássaro com o topo
-        topo_ponto = passaro_mask.overLap(topo_mask, distancia_topo)
+        topo_ponto = passaro_mask.overlap(topo_mask, distancia_topo)
         # Verdadeiro se existe um ponto de colisão do pássaro com a base
-        base_ponto = passaro_mask.overLap(base_mask, distancia_base)
+        base_ponto = passaro_mask.overlap(base_mask, distancia_base)
 
         if base_ponto or topo_ponto:
             return True
@@ -197,7 +197,7 @@ def main():
     relogio = pygame.time.Clock()
 
     rodando = True
-    while Rodando:
+    while rodando:
         relogio.tick(30)  # 30 quadros por segundo
 
         # Interação com o usuário
@@ -235,8 +235,11 @@ def main():
         for cano in remover_canos:
             canos.remove(cano)
 
-        for i, passaro in enumerate(passaro):
-            if (passaro.y + passaro.Imagem.get_heigt()) > chao.y < 0:
+        for i, passaro in enumerate(passaros):
+            if (passaro.y + passaro.imagem.get_heigt()) > chao.y or passaro.y < 0:
                 passaros.pop(i)
 
         desenhar_tela(tela, passaros, canos, chao, pontos)
+
+if __name__ == '__main__':
+    main()
