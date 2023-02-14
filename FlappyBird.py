@@ -235,14 +235,32 @@ def main(genomas, config):  # Fitness Function
                 rodando = False
                 pygame.quit()
                 quit()
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE:
-                    for passaro in passaros:
-                        passaro.pular()
+            if not ai_jogando:
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_SPACE:
+                        for passaro in passaros:
+                            passaro.pular()
+
+        indice_cano = 0
+        if len(passaros) > 0:
+            if len(canos) > 1 and passaros[0].x > (canos[0].x + canos[0].CANO_TOPO.get_width()):
+                indice_cano = 1
+        else:
+            rodando = False
+            break
 
         # Mover os objetos
-        for passaro in passaros:
+        for i, passaro in enumerate(passaros):
             passaro.mover()
+            # aumentar a fitness do pássaro
+            lista_genomas[i].fitness += 0.1
+            output = redes[i].activate((passaro.y,
+                    abs(passaro.y - canos[indice_cano].altura), 
+                    abs(passaro.y - canos[indice_cano].pos_base)))
+            # -1 e 1 -> se o output for > 0.5 então o pássaro pula
+            if output[0] > 0.5:
+                passaro.pular()
+
         chao.mover()
 
         adicionar_cano = False
