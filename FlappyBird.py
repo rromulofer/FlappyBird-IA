@@ -1,6 +1,15 @@
+# Autor: Rômulo Souza Fernandes
+# E-mail: 00119110559@pq.uenf.br
+# Data de criação: 13/02/23
+# Hashtag Programação
+
 import pygame
 import os
 import random
+import neat
+
+ai_jogando = True
+geracao = 0
 
 TELA_LARGURA = 500
 TELA_ALTURA = 800
@@ -183,12 +192,20 @@ def desenhar_tela(tela, passaros, canos, chao, pontos):
 
     texto = FONTE_PONTOS.render(f"Pontuação: {pontos}", 1, (255, 255, 255))
     tela.blit(texto, (TELA_LARGURA - 10 - texto.get_width(), 10))
+
+    if ai_jogando:
+        texto = FONTE_PONTOS.render(f"Geração: {geracao}", 1, (255, 255, 255))
+        tela.blit(texto, (10, 10))
+
     chao.desenhar(tela)
     pygame.display.update()
 
 
 # Função principal do jogo
 def main():
+    global geracao
+    geracao += 1
+
     passaros = [Passaro(230, 350)]
     chao = Chao(730)
     canos = [Cano(700)]
@@ -240,6 +257,7 @@ def main():
                 passaros.pop(i)
 
         desenhar_tela(tela, passaros, canos, chao, pontos)
+
 
 if __name__ == '__main__':
     main()
