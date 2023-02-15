@@ -299,7 +299,20 @@ def main(genomas, config):  # Fitness Function
         desenhar_tela(tela, passaros, canos, chao, pontos)
 
 def rodar(caminho_config):
-    pass
+    config = neat.config.Config(neat.DefaultGenome,
+                                neat.DefaultReproduction,
+                                neat.DefaultSpeciesSet,
+                                neat.DefaultStagnation,
+                                caminho_config)
+
+    populacao = neat.Population(config)
+    populacao.add_reporter(neat.StdOutReporter(True))
+    populacao.add_reporter(neat.StatisticsReporter())
+
+    if ai_jogando:
+        populacao.run(main, 50)
+    else:
+        main(None, None)
 
 if __name__ == '__main__':
     caminho = os.path.dirname(__file__)
