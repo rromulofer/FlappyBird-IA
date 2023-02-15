@@ -269,6 +269,10 @@ def main(genomas, config):  # Fitness Function
             for i, passaro in enumerate(passaros):
                 if cano.colidir(passaro):
                     passaros.pop(i)
+                    if ai_jogando:
+                        lista_genomas[i].fitness -= 1
+                        lista_genomas.pop(i)
+                        redes.pop(i)
                 if not cano.passou and passaro.x > cano.x:
                     cano.passou = True
                     adicionar_cano = True
@@ -279,15 +283,25 @@ def main(genomas, config):  # Fitness Function
         if adicionar_cano:
             pontos += 1
             canos.append(Cano(600))
+            for genoma in lista_genomas:
+                genoma.fitness += 5
+
         for cano in remover_canos:
             canos.remove(cano)
 
         for i, passaro in enumerate(passaros):
             if (passaro.y + passaro.imagem.get_height()) > chao.y or passaro.y < 0:
                 passaros.pop(i)
+                if ai_jogando:
+                    lista_genomas.pop(i)
+                    redes.pop(i)
 
         desenhar_tela(tela, passaros, canos, chao, pontos)
 
+def rodar(caminho_config):
+    pass
 
 if __name__ == '__main__':
-    main()
+    caminho = os.path.dirname(__file__)
+    caminho_config = os.path.join(caminho, 'config.txt')
+    rodar(caminho_config)
