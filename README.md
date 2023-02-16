@@ -1,6 +1,6 @@
 # FlappyBird-IA
  
-Nesse projeto está sendo recriado o jogo Flappy Bird utilizando a linguagem Python, para aprender e jogar o game está sendo utilizado uma inteligência artificial chamada [NEAT](https://neat-python.readthedocs.io/en/latest/). Tendo como base o projeto Flappy Bird do canal [Hashtag Programação](https://www.youtube.com/@HashtagProgramacao)
+Nesse projeto foi recriado o jogo Flappy Bird, utilizando a linguagem Python, para aprender e jogar o game está sendo utilizado a inteligência artificial [NEAT](https://neat-python.readthedocs.io/en/latest/). Tendo como base o projeto Flappy Bird do canal [Hashtag Programação](https://www.youtube.com/@HashtagProgramacao)
 
 N - Neural 	<br>
 E - Evolution 	<br>
@@ -30,5 +30,16 @@ Para realizar tudo isso vamos ter 3 passos, primeiro precisamos recriar o jogo F
 
 [Clique aqui](https://neat-python.readthedocs.io/en/latest/) para acessar o site oficial da biblioteca que está sendo utilizada. Buscando por [Configuration file description](https://neat-python.readthedocs.io/en/latest/config_file.html) podemos encontrar a explicação para todos os parâmetros necessários para o arquivo config.txt.
 
+Figura 1 - Demonstração da primeira geração de pássaros
 
+![exemplo_geracao_1](https://user-images.githubusercontent.com/78378199/219223194-4272a791-570d-47ba-868b-0b15f242ad78.png)
 
+Fonte: Captura própria
+
+Figura 2 - Demonstração da segunda geração de pássaros
+
+![exemplo_geracao_2](https://user-images.githubusercontent.com/78378199/219223197-06fdab37-f908-4a5c-a8ca-a40822db67cd.png)
+
+Fonte: Captura própria
+
+Podemos concluir que apenas com a segunda geração de pássaros já é possivel "zerar" o jogo, pois conseguiu alcançar grandes pontuações com mais de 1 pássaro jogando ao mesmo tempo.
